@@ -1,15 +1,49 @@
 ## Put comments here that give an overall description of what your
-## functions do
+## functions do store a cache matrix
 
-## Write a short comment describing this function
+
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  # setting null object for inverse matrix
+  m <- NULL	
+  
+  #set matrix value
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  #get the value
+  get <- function() x
+  setinverse <- function(inverse) m <<- inverse
+  getinverse <- function() m
+  #return the list of the precedent value
+  list(set=set, get=get,
+       setinverse=setinverse, 
+       getinverse=getinverse)
 }
 
-
-## Write a short comment describing this function
+## functions check if exist, if yes shows. If not calculate the ##inverse and store it
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+# we check if exist, if yes we get it already cache 
+
+ m <- x$getinverse()
+  if(!is.null(m)) {
+    message("getting cached data.")
+    return(m)
+  }
+  # if no, get the matrix
+  data <- x$get()
+  # inverse
+  m <- solve(data,...)
+  #cache the matrix
+  x$setinverse(m)
+  # return result
+  m
 }
+####test matrix#####
+#    x = rbind(c(10, 5), c(5, 10))
+#    mat_test = makeCacheMatrix(x)
+#    mat_test$get()
+
+#    cacheSolve(mat_test)
